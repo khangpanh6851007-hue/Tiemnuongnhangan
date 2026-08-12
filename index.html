@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Nướng Nhà Ngân</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #ff6b81;
+            --bg: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+            --text-muted: #b3b3b3;
+            --accent: #ffa502;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Be Vietnam Pro', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+
+        header { background: #000; padding: 15px 20px; border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 1000; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
+        .logo { font-size: 20px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        
+        .header-right { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .status-badge { font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 15px; }
+        .datetime-widget { background: rgba(255, 255, 255, 0.1); padding: 4px 10px; border-radius: 15px; font-size: 12px; color: var(--accent); font-weight: 500; display: flex; gap: 8px; }
+
+        .hero { background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; padding: 50px 20px; text-align: center; }
+        .hero h1 { color: var(--accent); font-size: 28px; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6); }
+        .hero p { font-size: 14px; color: #dcdde1; margin-bottom: 15px; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
+        
+        .section-title { text-align: center; font-size: 22px; margin-bottom: 20px; color: var(--text); }
+        .section-title::after { content: ''; display: block; width: 40px; height: 3px; background: var(--primary); margin: 6px auto 0; border-radius: 2px; }
+
+        .filter-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+        .filter-btn { background: var(--card); border: 1px solid #333; color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 13px; font-weight: 500; }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); border-color: var(--primary); }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        .card { background: var(--card); border-radius: 16px; overflow: hidden; transition: 0.3s; border: 1px solid #333; position: relative; }
+        .card img { width: 100%; height: 160px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .card-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+        .card-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; }
+        .card-price { color: var(--accent); font-weight: 700; font-size: 15px; }
+        .badge { background: rgba(255,71,87,0.2); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: var(--primary); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.2s; }
+        .delete-btn:hover { background: var(--primary); color: #fff; }
+
+        .admin-section { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 30px; border: 1px solid #333; }
+        .admin-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+        .form-control { background: #121212; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
+        .form-control:focus { border-color: var(--primary); }
+        .btn-submit { grid-column: 1 / -1; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .btn-submit:hover { background: var(--secondary); }
+
+        .info-section { background: var(--card); border-radius: 16px; padding: 20px; margin-top: 35px; border: 1px solid #333; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+        .info-item { display: flex; align-items: flex-start; gap: 12px; }
+        .info-item i { font-size: 20px; color: var(--primary); margin-top: 3px; }
+        .info-item h3 { font-size: 15px; margin-bottom: 2px; }
+        .info-item p { font-size: 13px; color: var(--text-muted); }
+        
+        .btn-map { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 6px 12px; background: var(--accent); color: #121212; font-size: 12px; font-weight: 600; border-radius: 6px; text-decoration: none; transition: 0.3s; }
+        .btn-map:hover { background: #ffcc00; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        .btn { flex: 1; padding: 12px; border-radius: 12px; text-align: center; text-decoration: none; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
+        .btn-zalo { background: #0084ff; }
+        .btn-phone { background: var(--primary); }
+
+        .footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px; margin-top: 30px; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fa-solid fa-fire-burner"></i> Tiệm Nướng Nhà Ngân
+            </div>
+            <div class="header-right">
+                <div id="shop-status" class="status-badge">Đang tải...</div>
+                <div class="datetime-widget">
+                    <span><i class="fa-regular fa-calendar"></i> <span id="current-date">--/--/----</span></span>
+                    <span><i class="fa-regular fa-clock"></i> <span id="current-time">--:--:--</span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>TIỆM NƯỚNG NHÀ NGÂN</h1>
+        <p>Xiên que thơm phức - Đồ nướng đậm đà - Chuẩn vị Mỏ Cày, Vĩnh Long</p>
+    </div>
+
+    <div class="container">
+        <!-- Admin Section -->
+        <div class="admin-section">
+            <h2 class="section-title" style="margin-bottom: 10px; font-size: 18px;">QUẢN LÝ / ĐĂNG MÓN MỚI</h2>
+            <form id="add-dish-form" class="admin-form" onsubmit="handleAddNewDish(event)">
+                <div class="form-group">
+                    <label>Tên món ăn</label>
+                    <input type="text" id="dish-name" class="form-control" placeholder="VD: Bạch tuộc nướng" required>
+                </div>
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <select id="dish-category" class="form-control">
+                        <option value="xien-que">Xiên Que</option>
+                        <option value="mon-nuong">Món Nướng</option>
+                        <option value="do-uong">Đồ Uống</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Giá tiền</label>
+                    <input type="text" id="dish-price" class="form-control" placeholder="VD: 75.000đ" required>
+                </div>
+                <div class="form-group">
+                    <label>Link hình ảnh (URL)</label>
+                    <input type="url" id="dish-img" class="form-control" placeholder="https://...">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Mô tả ngắn</label>
+                    <input type="text" id="dish-desc" class="form-control" placeholder="Mô tả hương vị món ăn..." required>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fa-solid fa-plus"></i> Đăng Món Mới (Lưu LocalStorage)</button>
+            </form>
+        </div>
+
+        <h2 class="section-title">MENU THỰC ĐƠN</h2>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="filterMenu('all', event)">Tất Cả</button>
+            <button class="filter-btn" onclick="filterMenu('xien-que', event)">Xiên Que</button>
+            <button class="filter-btn" onclick="filterMenu('mon-nuong', event)">Món Nướng</button>
+            <button class="filter-btn" onclick="filterMenu('do-uong', event)">Đồ Uống</button>
+        </div>
+
+        <div class="menu-grid" id="menu-grid">
+            <!-- Dữ liệu sẽ được load thêm ở đây -->
+        </div>
+
+        <div class="info-section">
+            <h2 class="section-title" style="margin-bottom: 15px; font-size: 18px;">THÔNG TIN LIÊN HỆ & ĐỊA CHỈ</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h3>Địa Chỉ Quán</h3>
+                        <p>137 QL57, Mỏ Cày, Vĩnh Long</p>
+                        <a href="https://maps.app.goo.gl/pDRNMtoNzw2yarpw6" target="_blank" class="btn-map">
+                            <i class="fa-solid fa-map-location-dot"></i> Mở Google Maps
+                        </a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-phone-volume"></i>
+                    <div>
+                        <h3>Số Điện Thoại / Zalo</h3>
+                        <p><a href="tel:0346100087" style="color: inherit; text-decoration: none;">0346100087</a></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <h3>Giờ Mở Cửa</h3>
+                        <p>15:00 - 23:00 (Hàng ngày)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a href="https://zalo.me/0346100087" target="_blank" class="btn btn-zalo">
+                    <i class="fa-solid fa-comment-dots"></i> Nhắn Zalo Đặt Món
+                </a>
+                <a href="tel:0346100087" class="btn btn-phone">
+                    <i class="fa-solid fa-phone"></i> Gọi Ngay: 0346100087
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 Tiệm Nướng Nhà Ngân. © Bản Quyền Thuộc Về Hoàng Ngân.</p>
+    </div>
+
+    <script>
+        // --- 1. DateTime & Status ---
+        function updateAll() {
+            const now = new Date();
+            
+            // Update Calendar
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            document.getElementById('current-date').textContent = `${day}/${month}/${year}`;
+            
+            // Update Clock
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Update Status (15:00 - 23:00)
+            const h = now.getHours();
+            const statusEl = document.getElementById('shop-status');
+            if (h >= 15 && h < 23) {
+                statusEl.innerHTML = '<span style="color: #2ed573;">● Đang mở cửa</span>';
+            } else {
+                statusEl.innerHTML = '<span style="color: #ff4757;">● Đã đóng cửa</span>';
+            }
+        }
+        setInterval(updateAll, 1000);
+        updateAll();
+
+        // --- 2. Filter Function ---
+        function filterMenu(category, event) {
+            const cards = document.querySelectorAll('.card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 3. LocalStorage Logic ---
+        const STORAGE_KEY = 'nha_ngan_custom_menu';
+
+        function loadCustomDishes() {
+            const savedDishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const menuGrid = document.getElementById('menu-grid');
+            
+            // Món mặc định mẫu
+            const defaultDishes = [
+                { name: "Xiên Que Thập Cẩm", category: "xien-que", price: "10.000đ/xiên", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80", desc: "Đa dạng viên chiên, bò viên, xúc xích nướng than hồng." },
+                { name: "Bò Cuộn Nấm Kim Châm", category: "xien-que", price: "15.000đ/xiên", img: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=500&q=80", desc: "Thịt bò tươi mềm ngọt cuộn chặt nấm giòn rụm nướng sate." },
+                { name: "Mực Nướng Sa Tế", category: "mon-nuong", price: "110.000đ", img: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=500&q=80", desc: "Mực tươi giòn sần sật tẩm ướp sa tế cay cay hấp dẫn." }
+            ];
+
+            const allDishes = [...defaultDishes, ...savedDishes];
+            menuGrid.innerHTML = ''; // Clear
+
+            allDishes.forEach((dish, index) => {
+                const isCustom = index >= defaultDishes.length;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-category', dish.category);
+                
+                card.innerHTML = `
+                    ${isCustom ? `<button class="delete-btn" onclick="deleteCustomDish(${index - defaultDishes.length})" title="Xóa món"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    <img src="${dish.img || 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=500&q=80'}" alt="${dish.name}">
+                    <div class="card-body">
+                        <div class="card-title">${dish.name}</div>
+                        <div class="card-desc">${dish.desc}</div>
+                        <div class="card-footer">
+                            <span class="card-price">${dish.price}</span>
+                            <span class="badge">${isCustom ? 'Mới đăng' : 'Bán chạy'}</span>
+                        </div>
+                    </div>
+                `;
+                menuGrid.appendChild(card);
+            });
+        }
+
+        function handleAddNewDish(event) {
+            event.preventDefault();
+            const name = document.getElementById('dish-name').value;
+            const category = document.getElementById('dish-category').value;
+            const price = document.getElementById('dish-price').value;
+            const img = document.getElementById('dish-img').value;
+            const desc = document.getElementById('dish-desc').value;
+
+            const newDish = { name, category, price, img, desc };
+            let savedDishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            savedDishes.push(newDish);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(savedDishes));
+
+            alert('Đăng món mới thành công!');
+            location.reload(); 
+        }
+
+        function deleteCustomDish(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa món này không?')) {
+                let savedDishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                savedDishes.splice(index, 1);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(savedDishes));
+                location.reload();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadCustomDishes);
+    </script>
+</body>
+</html>
